@@ -15,7 +15,7 @@ public static class TicketEndpoints
     {
         app.MapPost("/tickets", async (
             CreateTicketRequest request,
-            CreateTicketHandler handler,
+            ICommandHandler<CreateTicket, Guid> handler,
             CancellationToken ct) =>
         {
             var result = await handler.Handle(new CreateTicket(request.Title), ct);
