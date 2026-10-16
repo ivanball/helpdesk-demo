@@ -11,6 +11,7 @@
     <Project Path="src/Modules/Tickets/Helpdesk.Tickets.Presentation/Helpdesk.Tickets.Presentation.csproj" />
   </Folder>
   <Folder Name="/tests/">
+    <Project Path="tests/Helpdesk.ApiTests/Helpdesk.ApiTests.csproj" />
     <Project Path="tests/Helpdesk.ArchitectureTests/Helpdesk.ArchitectureTests.csproj" />
     <Project Path="tests/Helpdesk.Tickets.Domain.Tests/Helpdesk.Tickets.Domain.Tests.csproj" />
   </Folder>
