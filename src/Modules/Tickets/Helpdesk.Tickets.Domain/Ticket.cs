@@ -47,6 +47,38 @@ public sealed class Ticket : Entity
         ticket.Raise(new TicketCreated(ticket.Id, DateTime.UtcNow));
         return Success(ticket);
     }
+
+    public Result AddChildTask(string description)
+    {
+        if (Status == TicketStatus.Closed)
+            return Failure(TicketErrors.AlreadyClosed);
+
+        _childTasks.Add(new ChildTask(Guid.NewGuid(), description));
+        return Success();
+    }
+
+    public Result CompleteChildTask(Guid taskId)
+    {
+        var childTask = _childTasks.FirstOrDefault(t => t.Id == taskId);
+        if (childTask is null)
+            return Failure(TicketErrors.UnknownChildTask);
+
+        childTask.MarkDone();
+        return Success();
+    }
+
+    public Result Close()
+    {
+        if (Status == TicketStatus.Closed)
+            return Failure(TicketErrors.AlreadyClosed);
+
+        if (_childTasks.Any(t => !t.IsDone))
+            return Failure(TicketErrors.OpenChildTasks);
+
+        Status = TicketStatus.Closed;
+        Raise(new TicketClosed(Id, DateTime.UtcNow));
+        return Success();
+    }
 }
 
 public sealed class ChildTask
